@@ -1,12 +1,19 @@
 /**
- * Created by user on 2017-01-08.
+ * Created by Jinhyeon Park on 2017-01-08.
+ *
+ *  This file is about server.
  */
 
-var http = require('http');
+var http = require("http");
+var url = require("url");
 
-function start() {
+function start(route, handle) {
     function onRequest(request, response) {
-        console.log("Request received.");
+        var pathname = url.parse(request.url).pathname; // This code has a controversy because of location. (server or router)
+        console.log("Request for " + pathname + " received.");
+
+        route(handle, pathname);
+
         response.writeHead(200, {"Content-Type": "text/plain"});
         response.write("Hello World");
         response.end();
@@ -16,4 +23,5 @@ function start() {
     console.log("Server has started.");
 }
 
+// make server.js 's function into module
 exports.start = start;
