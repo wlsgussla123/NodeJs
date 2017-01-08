@@ -1,17 +1,28 @@
 /**
  * Created by Jinhyeon Park on 2017-01-08.
  *
- * This file is really things that what to do when we requested.
+ *  This file is really things that what to do when we requested.
+ *  modified contents : handler can response by itself
  */
 
-function start() {
+var exec = require("child_process").exec;
+
+function start(response) {
     console.log("Request handler 'start' was called.");
+
+    exec("ls -lah", function (error, stdout, stderr) {
+        response.writeHead(200, {"Content-Type": "text/plain"});
+        response.write(stdout);
+        response.end();
+    });
 }
 
-function upload() {
+function upload(response) {
     console.log("Request handler 'upload' was called.");
+    response.writeHead(200, {"Content-Type": "text/plain"});
+    response.write("Hello Upload");
+    response.end();
 }
 
 exports.start = start;
 exports.upload = upload;
-
